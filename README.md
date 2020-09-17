@@ -10,7 +10,8 @@ Forked and modified from https://github.com/attilapiros/trace-agent
 
 ### To attach to a running process
 
-$java -cp $JAVA_HOME/lib/tools.jar:trace-agent/target/trace-agent-1.0-SNAPSHOT.jar  net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar <PID>
+$java -cp $JAVA_HOME/lib/tools.jar:trace-agent/target/trace-agent-1.0-SNAPSHOT.jar  net.test.AgentLoader 
+trace-agent/target/trace-agent-1.0-SNAPSHOT.jar <PID>
 
 OR using the script run.sh
 
