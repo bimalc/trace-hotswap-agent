@@ -6,7 +6,7 @@ based on configurable simple text file.
 Forked and modified from https://github.com/attilapiros/trace-agent
 
 
-###Usage 
+##Usage 
 
 ### To attach to a running process
 
@@ -19,7 +19,7 @@ For example- ./run.sh $JAVA_HOME/lib/tools.jar trace-agent/target/trace-agent-1.
 
 ### To attach the agent while starting the process
 
-YOu can also pass the agent when starting the target java process instead of attaching to the running java process:
+You can also pass the agent when starting the target java process instead of attaching to the running java process:
 
 $java -javaagent:target/trace-agent-1.0-SNAPSHOT.jar="isDateLogged:true,dateTimeFormat:YYYY-MM-dd'T'hh:mm" -cp  test-app/target/TestApp-1.0-SNAPSHOT.jar net.test.App
 
