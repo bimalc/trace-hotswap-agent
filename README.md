@@ -1,13 +1,30 @@
 # Trace HotSwap Agent
 
-While analyzing java process which is stuck or hanging or having some performance issues, we 
-want to extract as much info as possible without have to restart it with different DEBUG level 
-or with added code or library. 
-
 This is a java agent which attaches to a running jvm and can alter log levels or trace various methods 
 based on configurable simple text file.  
 
 Forked and modified from https://github.com/attilapiros/trace-agent
+
+
+###Usage 
+
+### To attach to a running process
+
+$java -cp $JAVA_HOME/lib/tools.jar:trace-agent/target/trace-agent-1.0-SNAPSHOT.jar  net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar <PID>
+
+OR using the script run.sh
+
+./run.sh <complete path of tools.jar> <trace agent jar with path> <PID of the process>
+For example- ./run.sh $JAVA_HOME/lib/tools.jar trace-agent/target/trace-agent-1.0-SNAPSHOT.jar  1234
+
+### To attach the agent while starting the process
+
+YOu can also pass the agent when starting the target java process instead of attaching to the running java process:
+
+$java -javaagent:target/trace-agent-1.0-SNAPSHOT.jar="isDateLogged:true,dateTimeFormat:YYYY-MM-dd'T'hh:mm" -cp  test-app/target/TestApp-1.0-SNAPSHOT.jar net.test.App
+
+Where net.test.App is the test program.
+
 
 # The example
 
@@ -15,12 +32,13 @@ Here is the example to show how this tool can be used:
 
 ## The project we would like to trace
 
-Let's say we have a project what we would like analyze which uses log4j to log info and calls 
+The test-app has a simple java program what we would like analyze which uses log4j to log info and calls 
 multiple methods in different classes. We want to change log level at runtime or instrument time spent in some methods
 or arguments passed to any method etc. 
 
 
 The test app  can be executed as following:
+
 $java -cp test-app/target/TestApp-1.0-SNAPSHOT.jar net.test.App
 20/09/15 13:50:34 INFO test.App: Thread-0: New Thread calling test()21
 20/09/15 13:50:39 INFO test.App: Thread-1: New Thread calling test() and methodswithargs()..22
@@ -29,12 +47,12 @@ $java -cp test-app/target/TestApp-1.0-SNAPSHOT.jar net.test.App
 ## Let's trace it
 
 If you would like to change the log level to DEBUG and then back to INFO, then edit the configuration file
-actions.txt as following
-
+actions.txt as following:
 log4jlevel net.test.App debug 
 
-And then run load agent using the pid of the process as following:
-$java -cp agent-loader/target/java-trace-1.0.0-SNAPSHOT.jar:tools.jar net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar <PID>
+And then run load agent using the pid of the process as following by providing the path of actions.txt:
+
+$java -cp agent-loader/target/java-trace-1.0.0-SNAPSHOT.jar:tools.jar net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar=actionsFile=<path>/actions.txt  <PID>
 
 And you will see the message change on the previous terminal
 
@@ -69,7 +87,7 @@ This `actions.txt` is part of the trace agent jar as a resource (no recompile/re
 And to start the trace one could use:
 
 ```
-$java -cp java-trace-1.0.0-SNAPSHOT.jar:tools.jar:actions.txt com.cloudera.application.AgentLoader target/trace-agent-1.0-SNAPSHOT.jar=actionsFile:/tmp/actions.txt  <PID>
+$java -cp agent-loader/target/java-trace-1.0.0-SNAPSHOT.jar:tools.jar net.test.AgentLoader trace-agent/target/trace-agent-1.0-SNAPSHOT.jar=actionsFile=<path>/actions.txt  <PID>
 
 On the terminal running the test application you should see:
 
