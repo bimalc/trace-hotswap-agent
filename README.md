@@ -9,11 +9,12 @@ Forked and modified from https://github.com/attilapiros/trace-agent
 ##  Usage 
 
 ### To attach to a running process
-
+```
 ./run.sh <command> <pid of the java process>
-	
-A very simple example for example enable Debug level logging on a specific spark container :
+```
 
+A very simple example for example enable Debug level logging on a specific spark container :
+```
 #curl -L -o trace-hotswap-agent.tar.gz https://github.com/bimalc/trace-hotswap-agent/releases/download/v1.0/trace-hotswap-agent.tar.gz
 #tar xvfz trace-hotswap-agent.tar.gz
 #cd trace-hotswap-agent
@@ -22,10 +23,10 @@ A very simple example for example enable Debug level logging on a specific spark
 /tmp/temp/trace-hotswap-agent/jars/trace-agent-1.0-SNAPSHOT.jar=actionsFile:/tmp/temp/trace-hotswap-agent/actions/loglevel.txt
 Attaching to target JVM with PID: 215079
 Succefully attached to target JVM and loaded Java agent
-
+```
 
 If you tail the container logs , you will see the DEBUG level logging 
-
+```
 20/10/07 18:52:58 INFO storage.BlockManager: Removing RDD 7507
 20/10/07 18:52:58 INFO storage.BlockManager: Removing RDD 7502
 20/10/07 18:52:58 INFO storage.BlockManager: Removing RDD 6965
@@ -34,13 +35,13 @@ Calling install main
 20/10/07 18:52:59 INFO executor.Executor: Running task 0.0 in stage 3312.0 (TID 1723)
 20/10/07 18:52:59 DEBUG executor.Executor: Task 1723's epoch is 67
 20/10/07 18:52:59 DEBUG storage.BlockManager: Getting local block broadcast_1791
-
+```
 You can select differnt command for run.sh to select a differnt set of action file applied to the process.
 
 If you want to use your own actions file , you can run the tool directly as:
-
+```
 #$JAVA_HOME/bin/java -cp $JAVA_HOME/lib/tools.jar:./jars/trace-agent-1.0-SNAPSHOT.jar net.test.AgentLoader `pwd`/jars/trace-agent-1.0-SNAPSHOT.jar=actionsFile:actionsfile.txt  <PID of java process>
-
+```
 
 ### To attach the agent while starting the process
 
